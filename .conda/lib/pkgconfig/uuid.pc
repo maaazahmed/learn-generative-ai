@@ -1,0 +1,11 @@
+prefix=/home/maaz/Desktop/Development/GenAI/learn-generative-ai/.conda
+exec_prefix=/home/maaz/Desktop/Development/GenAI/learn-generative-ai/.conda
+libdir=/home/maaz/Desktop/Development/GenAI/learn-generative-ai/.conda/lib
+includedir=/home/maaz/Desktop/Development/GenAI/learn-generative-ai/.conda/include
+
+Name: uuid
+Description: Universally unique id library
+Version: 2.32.1
+Requires:
+Cflags: -I${includedir}/uuid
+Libs: -L${libdir} -luuid
