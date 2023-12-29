@@ -48,6 +48,3 @@ if(st.button("Calculate")):
     elif bmi >= 30:
         st.error("You are Extremely Overweight" )
 
-
-
- 
