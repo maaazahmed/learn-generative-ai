@@ -18,7 +18,7 @@ sys = st.chat_message("assistant")
 usr.write("Hello AI, How are you today")
 sys.write("I am fine what about you!")
 
-sys.write("Sure I am here for you")
 
+sys.write("Sure I am here for you")
 usr.write("I want to learn about you, can you teach me  ")
 
