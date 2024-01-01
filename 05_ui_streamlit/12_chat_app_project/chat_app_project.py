@@ -1,33 +1,86 @@
 import streamlit as st
 
 
-
 st.title("Echo Bot")
+
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
-        "role":"user",
-        "content":"How are you",
-    },
-      {
-        "role":"assistant",
-        "content":"I am fine",
-    }
+            "role":"user",
+            "content":"Hi, how are you"
+        },
+        {
+            "role":"assistant",
+            "content":"I am good"
+        },
     ]
+
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.markdown(message["content"])    
+        st.markdown(message["content"])
+        
+
+
+prompt = st.chat_input("Say something")
+
+if prompt:
+    
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    st.session_state.messages.append({"role":"user", "content":prompt})
+
+    response = f"Echo: {prompt}"
+
+    with st.chat_message("assistant"):
+        st.markdown(response)
+    st.session_state.messages.append({"role":"assistant", "content":response}) 
+
+
+
+
+
+         
+
+
+
+
+
+
+
+# st.title("Echo Bot")
+
+# if "messages" not in st.session_state:
+#     st.session_state.messages = []
+
+
+
+
+
+
+
+
+
+
+
+
+# for message in st.session_state.messages:
+#     with st.chat_message(message["role"]):
+#         st.markdown(message["content"])    
+
+
+
+
 
 # if prompt:=st.chat_input("What is up?"):
+        
 #     with st.chat_message("user"):
 #         st.markdown(prompt)
-    
-#     response = f"Echo: {prompt}"
 #     st.session_state.messages.append({"role":"user", "content":prompt})  
+        
 #     with st.chat_message("assistant"):
-#         st.markdown(response)
+#         st.markdown(f"Echo: {prompt}")
 #     st.session_state.messages.append({"role": "assistant", "content": response})        
     
          
