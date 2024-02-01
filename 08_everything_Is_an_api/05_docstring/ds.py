@@ -85,3 +85,46 @@ def table_of_number(table, end):
         print(table * i)
 
 table_of_number(2, 20)
+
+
+# make a list of users with email and username and password
+users = [
+    {
+        "email": "admin@example.com", "username":"test", "password":"test"},
+        {"email": "admin@example.com", "username":"XXXX", "password":"test"},
+        {"email": "admin@example.com", "username":"XXXXX", "password":"XXXXX"},
+        {"email": "admin@example.com", "username":"XXXXXX", "password":"XXXXXX"},
+        {"email": "admin@example.com", "username":"XXXXXXX", "password":"XXXXXXX"},
+
+]    
+        
+
+
+# create a login function that takes username and password and check this user is in users list
+def login(username, password):
+    """
+    this function takes username and password and check if the username and password are correct
+    :param username: username
+    :param password: password
+    :return: True if username and password are correct, False otherwise
+    """
+    for user in users:
+        if user["username"] == username and user["password"] == password:
+            return True
+    return False
+
+
+
+
+
+def login(username, password):
+    """
+    this function takes username and password and check if the username and password are correct
+    :param username: username
+    :param password: password
+    :return: True if username and password are correct, False otherwise
+    """
+    if username == "admin" and password == "admin":
+        return True
+    else:
+        return False

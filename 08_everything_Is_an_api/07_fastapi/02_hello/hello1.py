@@ -21,7 +21,3 @@ def greet()->dict:
 def green_name(name:str)->dict:
     return {"message":f"How are you, {name}"}
 
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("hello1:app", reload=True)
