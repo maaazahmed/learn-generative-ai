@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel, create_engine, Session
+from sqlmodel import Field, SQLModel, create_engine, Session, select
 from typing import Optional
 
 class Team(SQLModel, table=True):
@@ -53,12 +53,29 @@ def create_heros():
 
 
 
+def select_heroes():
+    with Session(engine) as session:
+        statement = select(Hero, Team).where(Hero.team_id == Team.id)
+        resulet = session.exec(statement)
+        for hero, team in resulet:
+            print("hero => ", hero.name, "|| Team => ", team.name)
+
+
+
+def select_heroes_with_join():
+    with Session(engine) as session:
+        statement = select(Hero, Team).join(Team, isouter=True).where(Team.name == "Preventers")
+        res = session.exec(statement)
+        for hero, team in res:
+            print(hero.name,"=====",team.name)
+       
+
 
 def main():
-    create_db_and_table()    
-    create_heros()
-
-
+    # create_db_and_table()    
+    # create_heros()
+    select_heroes()
+    select_heroes_with_join()
 
 
 
