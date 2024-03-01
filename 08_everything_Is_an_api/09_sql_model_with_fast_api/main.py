@@ -1,10 +1,9 @@
 from sqlmodel import create_engine,select, Session, SQLModel
-from fastapi import FastAPI, Depends, HTTPException, status, Header
+from fastapi import FastAPI, Depends, HTTPException, status
 from model import UserResponse, UserCreate,User, UserLogin, Token, TokenData
 from typing import Annotated
-from service import get_hashed_pass, verify_password,create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
+from service import get_hashed_pass, verify_password,create_access_token, verify_token,ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
-from jose import JWTError, jwt
 
 
 app:FastAPI =  FastAPI()
@@ -15,7 +14,6 @@ engine = create_engine(db_url, echo=True)
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
-
 
 
 @app.on_event("startup")
@@ -47,6 +45,10 @@ async def create_user(user:UserCreate, db:Annotated[Session, Depends(get_deb)]):
         return Token(access_token=access_token, token_type="bearer")
     
 
+
+
+
+
 @app.post("/login", response_model=Token)
 async def login_user(login_data:UserLogin, db:Annotated[Session,Depends(get_deb)]):
     statement = select(User).where(User.email == login_data.email)
@@ -64,27 +66,18 @@ async def login_user(login_data:UserLogin, db:Annotated[Session,Depends(get_deb)
 
 
 
+
+
 @app.get("/user", response_model=UserResponse)
-async def get_user(db:Annotated[Session, Depends(get_deb)],token:str = Header()):
+async def get_user(db:Annotated[Session, Depends(get_deb)],token_data:Annotated[TokenData, Depends(verify_token)]):
+    print("token: ", token_data)
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticat":"Bearer"}
     )
-
-    try:
-        payload = jwt.decode(token,SECRET_KEY, algorithms=ALGORITHM)
-        email:str | None = payload.get("email") 
-        if email is None:
-            raise credentials_exception
-        token_data = TokenData(email=email)
-        print("token",token_data)
-    except JWTError :
-        raise credentials_exception
-    
     if token_data.email is None:
         raise credentials_exception
-   
     statement = select(User).where(User.email == token_data.email)
     response = db.exec(statement).one()
     if not response:
