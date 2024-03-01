@@ -2,13 +2,24 @@ import streamlit as st
 import random
 import time
 from openai import OpenAI
+from modal import AiAssistant
+from dotenv import dotenv_values
+
 
 st.title("Echo Bot")
 
 # st.info("API_KEY: {}".format(st.secrets["OPENAI_API_KEY"]))
+OPENAI_API_KEY:str = dotenv_values(".env").get("OPENAI_API_KEY")
 
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+
+
+ai_assistant:AiAssistant = AiAssistant()
+
+# ai_assistant.create_assistant()
+
 
 
 if "openai_model" not in st.session_state:
@@ -17,6 +28,21 @@ if "openai_model" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+print("assistant_id" not in st.session_state, "00000000000000000000000")
+if "assistant_id" not in st.session_state:
+    print("-assistant-")
+    ai_asst = ai_assistant.create_assistant()
+    st.session_state["assistant_id"] = ai_asst.id
+
+
+st.sidebar.header("Sidebar Header")
+st.sidebar.subheader("Subheader")
+if "assistant_id" in st.session_state:
+    # st.sidebar.text(st.session_state["assistant_id"])
+    if st.button:
+        st.sidebar.button(label=st.session_state["assistant_id"])
+
+
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -24,10 +50,11 @@ for message in st.session_state.messages:
         
 
 
-prompt = st.chat_input("Say something")
 
+prompt = st.chat_input("Say something")
 if prompt:
     st.session_state.messages.append({"role":"user", "content":prompt})
+    
     with st.chat_message("user"):
         st.markdown(prompt)
 

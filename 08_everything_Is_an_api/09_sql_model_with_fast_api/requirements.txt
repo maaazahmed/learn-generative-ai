@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+sqlmodel
+bcrypt
+python-jose
+passlib
+datetime
